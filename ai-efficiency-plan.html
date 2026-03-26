@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI提效规划</title>
+  <style>
+    :root {
+      --bg: #f6f1e8;
+      --paper: rgba(255, 250, 242, 0.9);
+      --ink: #1d2a33;
+      --muted: #5e6a70;
+      --primary: #0d6b6b;
+      --secondary: #cc6b2c;
+      --accent: #e6b85c;
+      --line: rgba(29, 42, 51, 0.12);
+      --shadow: 0 18px 40px rgba(39, 48, 56, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(230, 184, 92, 0.28), transparent 28%),
+        radial-gradient(circle at 85% 15%, rgba(13, 107, 107, 0.2), transparent 26%),
+        linear-gradient(135deg, #f9f4ec 0%, #f3eadc 48%, #efe6d9 100%);
+      line-height: 1.7;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 72px 24px 44px;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto -120px -90px auto;
+      width: 340px;
+      height: 340px;
+      border-radius: 50%;
+      background: rgba(13, 107, 107, 0.08);
+      filter: blur(4px);
+    }
+
+    .container {
+      width: min(1160px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .hero-card,
+    .section,
+    .skill-card,
+    .metric,
+    .timeline-item {
+      background: var(--paper);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.65);
+      box-shadow: var(--shadow);
+    }
+
+    .hero-card {
+      position: relative;
+      padding: 44px;
+      border-radius: 28px;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(13, 107, 107, 0.12);
+      color: var(--primary);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      font-size: 12px;
+      text-transform: uppercase;
+    }
+
+    h1, h2, h3 {
+      margin: 0;
+      line-height: 1.2;
+    }
+
+    h1 {
+      margin-top: 18px;
+      font-size: clamp(34px, 5vw, 58px);
+      letter-spacing: -0.03em;
+    }
+
+    .hero p {
+      max-width: 860px;
+      margin: 18px 0 0;
+      font-size: 18px;
+      color: var(--muted);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 28px;
+    }
+
+    .metric {
+      padding: 20px 18px;
+      border-radius: 20px;
+    }
+
+    .metric strong {
+      display: block;
+      font-size: 30px;
+      color: var(--primary);
+    }
+
+    .metric span {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    main {
+      padding: 0 24px 64px;
+    }
+
+    .section {
+      margin-top: 24px;
+      padding: 32px;
+      border-radius: 24px;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 22px;
+    }
+
+    .section-title h2 {
+      font-size: 30px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(204, 107, 44, 0.12);
+      color: var(--secondary);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .columns-2,
+    .columns-3,
+    .skills,
+    .timeline {
+      display: grid;
+      gap: 18px;
+    }
+
+    .columns-2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .columns-3,
+    .skills {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.55);
+    }
+
+    .card h3 {
+      font-size: 22px;
+      margin-bottom: 12px;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    ul {
+      margin: 14px 0 0;
+      padding-left: 18px;
+    }
+
+    li + li {
+      margin-top: 8px;
+    }
+
+    .highlight {
+      color: var(--secondary);
+      font-weight: 700;
+    }
+
+    .skill-card {
+      border-radius: 22px;
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .skill-card::before {
+      content: "";
+      position: absolute;
+      right: -36px;
+      top: -36px;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: rgba(230, 184, 92, 0.18);
+    }
+
+    .skill-card h3 {
+      font-size: 24px;
+      margin-bottom: 10px;
+      position: relative;
+    }
+
+    .skill-card p,
+    .timeline-item p {
+      margin: 0;
+      color: var(--muted);
+      position: relative;
+    }
+
+    .skill-card .value {
+      margin-top: 14px;
+      font-size: 15px;
+      color: var(--ink);
+      font-weight: 700;
+    }
+
+    .skill-card a {
+      display: inline-flex;
+      align-items: center;
+      margin-top: 18px;
+      padding: 10px 14px;
+      border-radius: 12px;
+      background: var(--primary);
+      color: #fffaf2;
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    .skill-card a:hover {
+      background: #0a5858;
+    }
+
+    .timeline {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .timeline-item {
+      border-radius: 20px;
+      padding: 22px;
+    }
+
+    .timeline-item .step {
+      display: inline-block;
+      margin-bottom: 10px;
+      color: var(--secondary);
+      font-weight: 800;
+      font-size: 13px;
+      letter-spacing: 0.08em;
+    }
+
+    .quote {
+      margin-top: 20px;
+      padding: 22px 24px;
+      border-left: 5px solid var(--accent);
+      border-radius: 16px;
+      background: rgba(230, 184, 92, 0.12);
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .footer-note {
+      margin-top: 24px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    @media (max-width: 960px) {
+      .hero-grid,
+      .columns-2,
+      .columns-3,
+      .skills,
+      .timeline {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-card,
+      .section {
+        padding: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="container">
+      <div class="hero-card">
+        <h1>AI提效规划：<br />让“偶尔用一下”升级为“团队稳定产能”</h1>
+        <p>
+          目前团队对 AI 的使用还停留在“选中一段代码，把需求贴给智能体”的初级阶段。这个阶段已经证明 AI
+          有价值，但还远没有进入规模化提效。下一步的重点是让更多人真正开始用、持续用、用得更专业。
+        </p>
+        
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <section class="section">
+        <div class="section-title">
+          <h2>一、当前现状：AI 已经进场，但还没有打成体系</h2>
+          <span class="tag">现状判断</span>
+        </div>
+        <div class="columns-3">
+          <div class="card">
+            <h3>还没开始的人</h3>
+            <p>少部分同事还没有真正把 AI 纳入开发流程，主要顾虑集中在 <span class="highlight">成本、习惯、收益感知不强</span>。</p>
+          </div>
+          <div class="card">
+            <h3>已经在用的人</h3>
+            <p>大部分同事已经会把代码和需求直接交给 AI 生成，这是一个好开始，但仍然属于 <span class="highlight">点状使用</span>。</p>
+          </div>
+          <div class="card">
+            <h3>现在的瓶颈</h3>
+            <p>AI 能写代码，但如果需求输入不清、数据上下文缺失、旧逻辑理解不全，产出就容易出现偏差和返工。</p>
+          </div>
+        </div>
+        <div class="quote">真正的提效，不是“多写几段代码”，而是“减少来回沟通、减少返工、减少摸索”。</div>
+      </section>
+
+      <section class="section">
+        <div class="section-title">
+          <h2>一个关键前提：高质量需求文档，本身就是提效起点</h2>
+          <span class="tag">前置条件</span>
+        </div>
+        <div class="columns-2">
+          <div class="card">
+            <h3>为什么要强调需求文档质量</h3>
+            <ul>
+              <li>研发效率的上限，往往受制于需求输入的清晰度。</li>
+              <li>如果需求文档结构混乱、边界不清、规则缺失，AI 生成再快，也只是更快地产生偏差。</li>
+              <li>很多返工并不是代码能力问题，而是前期需求表达不完整、例外场景没有提前说清。</li>
+              <li>所以，需求文档质量越高，研发和 AI 的协作效率就越高。</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>这件事不只是研发侧的任务</h3>
+            <ul>
+              <li>作为研发人员，我们希望产品人员也能使用 AI 工具提升需求文档质量。</li>
+              <li>例如借助 AI 对需求文档做结构化整理、补充遗漏场景、统一术语、检查歧义和矛盾点。</li>
+              <li>当产品先把文档质量提上来，研发接手时上下文会更完整，AI 也更容易给出高质量结果。</li>
+              <li>最终受益的不是某一个角色，而是整个交付链路。</li>
+            </ul>
+          </div>
+        </div>
+        <div class="quote">如果说 AI 是放大器，那么需求文档质量决定了它放大的到底是效率，还是返工。</div>
+      </section>
+
+      <section class="section">
+        <div class="section-title">
+          <h2>二、推进目标：分层推广</h2>
+          <span class="tag">推广思路</span>
+        </div>
+        <div class="columns-2">
+          <div class="card">
+            <h3>对未使用人群</h3>
+            <ul>
+              <li>重点解决顾虑，让他们先跨出第一步。</li>
+              <li>把 AI 的使用门槛降低到“今天就能上手”。</li>
+              <li>围绕成本问题，推动按场景试点，用几个真实案例证明投入产出比。</li>
+              <li>目标不是一上来就高手化，而是先让大家养成日常协作习惯。</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>对已使用人群</h3>
+            <ul>
+              <li>从“直接问 AI”升级到“带技能、带上下文、带工具链”。</li>
+              <li>推广可复用的技能，让 AI 具备读文档、读数据、懂旧系统的能力。</li>
+              <li>把零散个人经验沉淀成可复制的方法，避免每个人都从零摸索。</li>
+              <li>目标是让 AI 从代码生成器，变成业务理解和交付加速器。</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-title">
+          <h2>三、核心策略：把 AI 使用从“提问”升级为“技能作业流”</h2>
+          <span class="tag">关键动作</span>
+        </div>
+        <div class="columns-3">
+          <div class="card">
+            <h3>先把文档质量提上来</h3>
+            <p>推动产品和研发共同使用 AI 优化需求文档，让输入更清楚、边界更明确、规则更完整，这是后续一切提效动作的前提。</p>
+          </div>
+          <div class="card">
+            <h3>让 AI 看懂需求</h3>
+            <p>很多需求藏在 Word 文档里。与其手工复制整理，不如直接让 AI 读取并结构化，减少遗漏和理解偏差。</p>
+          </div>
+          <div class="card">
+            <h3>让 AI 接入业务数据</h3>
+            <p>有了数据库查询能力，AI 不只是“猜”，而是可以基于真实业务数据辅助分析、排查、配置。</p>
+          </div>
+          <div class="card">
+            <h3>让 AI 理解老系统迁移规则</h3>
+            <p>复杂改造最怕遗漏字段、顺序错位、导出不一致。技能化之后，迁移动作可以更稳、更完整、更可验证。</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-title">
+          <h2>四、三个技能：提高AI使用效率</h2>
+          <span class="tag">重点能力</span>
+        </div>
+        <div class="skills">
+          <article class="skill-card">
+            <h3>技能一：读取 Word 文档</h3>
+            <p>适合需求来自 Word 场景。AI 可以直接提取正文、标题、表格和核心元数据，快速把原始需求转成可分析、可执行的结构化输入。</p>
+            <div class="value">价值：需求输入更快，信息还原更完整，减少人工二次整理。</div>
+            <a href="file:///Users/leon/.codex/skills/docx-parser/SKILL.md">打开 SKILL.md</a>
+          </article>
+
+          <article class="skill-card">
+            <h3>技能二：连接开发环境数据库</h3>
+            <p>适合业务排查、数据核对、AI 辅助配置等场景。AI 可以基于只读查询拿到真实业务数据，让分析更贴近实际而不是停留在代码层面。</p>
+            <div class="value">价值：让 AI 从“会写代码”升级为“会读业务现场”。</div>
+            <a href="file:///Users/leon/.codex/skills/mysql-reader-tj-dev/SKILL.md">打开 SKILL.md</a>
+          </article>
+
+          <article class="skill-card">
+            <h3>技能三：旧系统功能迁移</h3>
+            <p>适合老功能搬迁、新旧系统对齐、结果字段核对、导出一致性验证等高复杂度任务。它强调严格对齐、可核验、避免依赖旧 jar 包。</p>
+            <div class="value">价值：把经验型迁移，变成有清单、有边界、有验证证据的标准动作。</div>
+            <a href="file:///Users/leon/Desktop/zhzd/skills/zhzd-function-migration/SKILL.md">打开 SKILL.md</a>
+          </article>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-title">
+          <h2>五、落地收益：为什么这三项能力值得优先推广</h2>
+          <span class="tag">业务价值</span>
+        </div>
+        <div class="columns-2">
+          <div class="card">
+            <h3>对团队效率的直接收益</h3>
+            <ul>
+              <li>需求输入更快，减少人工摘录和重复解释。</li>
+              <li>数据核对更准，减少“代码看起来对，数据跑起来不对”的来回排查。</li>
+              <li>旧系统迁移更稳，降低漏字段、漏规则、漏导出的风险。</li>
+              <li>个人技巧可以复制，团队整体能力不再依赖个别高手。</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>对团队文化的长期收益</h3>
+            <ul>
+              <li>推动产品和研发在需求阶段就开始借助 AI，共同提升文档质量和沟通质量。</li>
+              <li>让 AI 从“可选项”逐步变成“默认工作方式”。</li>
+              <li>让大家意识到，AI 不是只会聊天，而是可以带技能、带工具、带上下文。</li>
+              <li>推动经验沉淀，形成可复用的提示词、技能库和标准作业模式。</li>
+              <li>让 AI 教练的角色不仅是宣导者，更是工作方法升级的推动者。</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-title">
+          <h2>六、推进节奏建议：先点燃，再扩散，最后固化</h2>
+          <span class="tag">实施路径</span>
+        </div>
+        <div class="timeline">
+          <div class="timeline-item">
+            <span class="step">STEP 01</span>
+            <h3>先打样</h3>
+            <p>围绕日常需求开发或者旧系统迁移，分别做 1 到 2 个真实案例演示。</p>
+          </div>
+          <div class="timeline-item">
+            <span class="step">STEP 02</span>
+            <h3>再推广</h3>
+            <p>针对未使用人群做轻量培训，先解决“敢不用”的问题，再解决“不会用”的问题。</p>
+          </div>
+          <div class="timeline-item">
+            <span class="step">STEP 03</span>
+            <h3>再进阶</h3>
+            <p>针对已使用人群推广技能化操作，鼓励在高频任务中沉淀可复用方法。</p>
+          </div>
+          <div class="timeline-item">
+            <span class="step">STEP 04</span>
+            <h3>最后固化</h3>
+            <p>把成功案例、技能入口、常用提示词和注意事项沉淀为团队共享资产。</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-title">
+          <h2>七、这不是一次工具推广，而是一次工作方式升级</h2>
+          <span class="tag">结语</span>
+        </div>
+        <div class="card">
+          <p>
+            如果我们只是让 AI 帮忙补几段代码，团队能获得的是局部效率；如果我们把需求文档、业务数据、旧系统知识一起接入 AI，
+            那么获得的就是一套可复制、可放大的生产力体系。下一阶段的目标很明确：
+            <span class="highlight">让产品侧先把文档质量提上来，让研发侧把 AI 用得更深，让团队真正形成从需求到交付的 AI 提效闭环。</span>
+          </p>
+        </div>
+      </section>
+    </div>
+  </main>
+</body>
+</html>
